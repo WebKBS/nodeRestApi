@@ -33,11 +33,34 @@ const addTodo = async (req, res, next) => {
 };
 
 const updateTodo = async (req, res, next) => {
-  //
+  const todoId = req.params.id;
+  const newTodoText = req.body.newText;
+
+  const todo = new Todo(newTodoText, todoId);
+
+  try {
+    await todo.save();
+  } catch (error) {
+    console.log(error);
+    return next(error);
+  }
+
+  res.json({ message: "Todo 업데이트", updateTodo: todo });
 };
 
 const deleteTodo = async (req, res, next) => {
-  //
+  const todoId = req.params.id;
+
+  const todo = new Todo(null, todoId);
+
+  try {
+    await todo.delete();
+  } catch (error) {
+    console.log(error);
+    return next(error);
+  }
+
+  res.json({ message: "Todo 삭제완료" });
 };
 
 module.exports = {
